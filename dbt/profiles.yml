@@ -1,0 +1,23 @@
+# No key file and no Application Default Credentials.
+# Locally, scripts/dbt sets DBT_GCP_TOKEN from the `personal` gcloud config.
+# In GitHub Actions, the auth step (Workload Identity Federation) sets it.
+ai_sdk_downloads:
+  target: dev
+  outputs:
+    dev: &defaults
+      type: bigquery
+      method: oauth-secrets
+      token: "{{ env_var('DBT_GCP_TOKEN') }}"
+      project: ancient-voltage-258310
+      dataset: dev_staging
+      location: US
+      threads: 4
+      priority: interactive
+      job_execution_timeout_seconds: 300
+      maximum_bytes_billed: 5368709120  # 5 GiB per query
+    ci:
+      <<: *defaults
+      dataset: ci_staging
+    prod:
+      <<: *defaults
+      dataset: staging

@@ -1,0 +1,30 @@
+name: ai_sdk_downloads
+version: "1.0.0"
+config-version: 2
+profile: ai_sdk_downloads
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+clean-targets: ["target", "dbt_packages"]
+
+# Full rebuild on every run. Datasets per target: see macros/generate_schema_name.sql.
+models:
+  ai_sdk_downloads:
+    staging:
+      +schema: staging
+      +materialized: view
+    intermediate:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: marts
+      +materialized: table
+    recon:
+      +schema: marts
+      +materialized: table
+
+seeds:
+  ai_sdk_downloads:
+    +schema: staging

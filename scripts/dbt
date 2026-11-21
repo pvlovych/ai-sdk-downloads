@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run dbt locally as the personal Google account. Usage: scripts/dbt debug
+set -euo pipefail
+repo="$(cd "$(dirname "$0")/.." && pwd)"
+export CLOUDSDK_ACTIVE_CONFIG_NAME=personal
+# Stop unless the personal config is the personal account (same check as the ingest scripts).
+(cd "$repo" && .venv/bin/python -c "from ingest.common import get_client; get_client()")
+DBT_GCP_TOKEN="$(gcloud auth print-access-token)"
+export DBT_GCP_TOKEN
+export DBT_PROFILES_DIR="$repo/dbt"
+cd "$repo/dbt"
+exec "$repo/.venv/bin/dbt" "$@"
