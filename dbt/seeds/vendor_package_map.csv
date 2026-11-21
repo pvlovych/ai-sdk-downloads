@@ -1,0 +1,13 @@
+ecosystem,package,vendor,is_control,valid_from,valid_to,note
+pypi,openai,OpenAI,false,,,also a generic client for OpenAI-compatible APIs
+pypi,anthropic,Anthropic,false,,,
+pypi,google-genai,Google,false,,,new SDK name
+pypi,google-generativeai,Google,false,,,old SDK name; count both
+pypi,stripe,Stripe,true,,,control group
+pypi,twilio,Twilio,true,,,control group
+npm,openai,OpenAI,false,,,
+npm,@anthropic-ai/sdk,Anthropic,false,,,
+npm,@google/genai,Google,false,,,new SDK name
+npm,@google/generative-ai,Google,false,,,old SDK name; count both
+npm,stripe,Stripe,true,,,control group
+npm,twilio,Twilio,true,,,control group
