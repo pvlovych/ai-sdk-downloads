@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_pypi__downloads
+    description: 1 row per raw aggregate row. Package names normalized to PEP 503 (lowercase, runs of - _ . become -).
+    columns:
+      - name: download_date
+        data_tests: [not_null]
+      - name: package
+        data_tests: [not_null]
+      - name: is_ci
+        description: NULL when the client did not report it.
+      - name: downloads
+        data_tests: [not_null]
+
+  - name: stg_pypistats__overall
+    description: pypistats daily totals, latest pull per date x package x category.
+    columns:
+      - name: download_date
+        data_tests: [not_null]
+      - name: package
+        data_tests: [not_null]
+      - name: category
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['with_mirrors', 'without_mirrors']
+      - name: downloads
+        data_tests: [not_null]

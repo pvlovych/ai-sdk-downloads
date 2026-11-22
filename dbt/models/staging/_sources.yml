@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: raw_pypi
+    database: ancient-voltage-258310
+    schema: raw_pypi
+    config:
+      loaded_at_field: loaded_at
+      freshness:
+        warn_after: {count: 26, period: hour}
+        error_after: {count: 50, period: hour}
+    tables:
+      - name: downloads_agg
+        description: >
+          PyPI downloads from the public BigQuery table, aggregated at ingest to
+          date x package x version x installer x country x Python minor x CI flag.
+          The ingest replaces the last 3 days on every run.
+
+  - name: raw_pypistats
+    database: ancient-voltage-258310
+    schema: raw_pypistats
+    config:
+      loaded_at_field: loaded_at
+      freshness:
+        warn_after: {count: 26, period: hour}
+        error_after: {count: 50, period: hour}
+    tables:
+      - name: overall
+        description: >
+          pypistats.org /overall endpoint, last 180 days per pull. Every pull is
+          appended, so the same date appears once per pull.
