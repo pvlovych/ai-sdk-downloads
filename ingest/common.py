@@ -39,6 +39,19 @@ def get_client() -> bigquery.Client:
     return bigquery.Client(project=PROJECT, credentials=Credentials(token), location="US")
 
 
+def secret(name: str) -> str:
+    """Environment first (GitHub Actions secrets), then the git-ignored .env file."""
+    if os.environ.get(name):
+        return os.environ[name]
+    env_file = Path(__file__).resolve().parent.parent / ".env"
+    if env_file.exists():
+        for line in env_file.read_text().splitlines():
+            key, sep, value = line.partition("=")
+            if sep and key.strip() == name:
+                return value.strip()
+    raise SystemExit(f"{name} is not set (environment or .env)")
+
+
 def packages(ecosystem: str) -> list[str]:
     with SEED.open() as f:
         return sorted({r["package"] for r in csv.DictReader(f) if r["ecosystem"] == ecosystem})
