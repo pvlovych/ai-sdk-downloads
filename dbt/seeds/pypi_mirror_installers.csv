@@ -1,0 +1,5 @@
+installer,source
+bandersnatch,https://github.com/psf/pypistats.org/blob/main/pypistats/tasks/pypi.py
+z3c.pypimirror,https://github.com/psf/pypistats.org/blob/main/pypistats/tasks/pypi.py
+Artifactory,https://github.com/psf/pypistats.org/blob/main/pypistats/tasks/pypi.py
+devpi,https://github.com/psf/pypistats.org/blob/main/pypistats/tasks/pypi.py

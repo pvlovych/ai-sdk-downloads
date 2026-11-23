@@ -28,3 +28,8 @@ models:
 seeds:
   ai_sdk_downloads:
     +schema: staging
+    vendor_package_map:
+      +column_types:
+        is_control: bool
+        valid_from: date
+        valid_to: date

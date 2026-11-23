@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: int_pypi__downloads_classified
+    description: >
+      Same grain as stg_pypi__downloads. Adds vendor, mirror, CI and partial-day flags.
+      No rows are removed. The mirror list is the pypistats list (seed pypi_mirror_installers).
+    columns:
+      - name: vendor
+        description: From vendor_package_map, for the date the download happened.
+        data_tests: [not_null]
+      - name: is_control
+        data_tests: [not_null]
+      - name: is_mirror
+        description: Installer is on the pypistats mirror list. Exact, case-sensitive match.
+        data_tests: [not_null]
+      - name: is_unknown_installer
+        description: No installer name. pypistats without_mirrors drops these rows as well.
+        data_tests: [not_null]
+      - name: is_ci
+        description: TRUE when the client reported CI. Raw has only TRUE or NULL, so NULL becomes FALSE.
+        data_tests: [not_null]
+      - name: is_partial_day
+        description: The row was loaded before its UTC day ended.
+        data_tests: [not_null]
+
+seeds:
+  - name: pypi_mirror_installers
+    description: Installer names pypistats treats as mirrors. Copied from the pypistats source, linked in each row.
+    columns:
+      - name: installer
+        data_tests: [unique, not_null]
