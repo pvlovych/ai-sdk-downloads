@@ -27,3 +27,38 @@ models:
                 values: ['with_mirrors', 'without_mirrors']
       - name: downloads
         data_tests: [not_null]
+
+  - name: stg_npm__downloads
+    description: >
+      1 row per date x package. On days where every package is 0 (npm lost the day),
+      downloads is NULL and downloads_reported keeps the 0.
+    columns:
+      - name: download_date
+        data_tests: [not_null]
+      - name: package
+        data_tests: [not_null]
+      - name: downloads
+        description: NULL on npm gap days. Use this column, not downloads_reported.
+      - name: downloads_reported
+        data_tests: [not_null]
+      - name: is_npm_gap
+        data_tests: [not_null]
+
+  - name: stg_fred__ramp_ai
+    description: >
+      Ramp AI Index, 1 row per series x month x vintage. vintage_end is NULL for the
+      current vintage. Adoption is the % of Ramp businesses with an AI payment in the month.
+    columns:
+      - name: series_id
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['RAMPAIALL', 'RAMPAIANTHROPIC', 'RAMPAIOPENAI', 'RAMPAIXAI']
+      - name: observation_month
+        data_tests: [not_null]
+      - name: vintage_start
+        data_tests: [not_null]
+      - name: is_latest_vintage
+        data_tests: [not_null]
+      - name: adoption_pct
+        description: NULL where FRED sends "." (no value).
